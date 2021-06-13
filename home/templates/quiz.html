@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+    background-color: #eee
+}
+
+label.radio {
+    cursor: pointer
+}
+
+label.radio input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    pointer-events: none
+}
+
+label.radio span {
+    padding: 4px 0px;
+    border: 1px solid red;
+    display: inline-block;
+    color: red;
+    width: 100px;
+    text-align: center;
+    border-radius: 3px;
+    margin-top: 7px;
+    text-transform: uppercase
+}
+
+label.radio input:checked+span {
+    border-color: red;
+    background-color: red;
+    color: #fff
+}
+
+.ans {
+    margin-left: 36px !important
+}
+
+.btn:focus {
+    outline: 0 !important;
+    box-shadow: none !important
+}
+
+.btn:active {
+    outline: 0 !important;
+    box-shadow: none !important
+}
+    </style>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+
+    <div id="app">
+    <div class="mx-auto col-md-6 mt-5 pt-5">
+        <div>
+            <h2>Create Your Quiz </h2>
+            </div>  
+
+        <div v-for="question in questions">
+          
+            <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row align-items-center question-title">
+                    <h3 class="text-danger">Q.</h3>
+                    <h5 class="mt-1 ml-2"> <p>[[question.question]]</p></h5>
+                </div>
+
+               
+                <div class="ans ml-2" v-for="a in question.answer" >
+                    <label class="radio"> <input type="radio" name="brazil" :value="a.id"> <span>[[a.answer]]</span>
+                    </label>
+                </div>
+                
+            </div>
+
+        </div>
+
+         
+    </div>
+</div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
+        let app = new Vue({
+          el: "#app",
+          delimiters: ['[[', ']]'],
+          data: {
+            quiz_id : '{{quiz_id}}',
+            category : '{{category}}',
+            csrf : "{{ csrf_token }}",
+            questions : []
+          },
+          methods : {   
+           
+          },
+          created(){
+            var _this = this
+
+            axios.get(`/get-questions/?category=${this.category}`).then(function (response) {
+                    console.log(response.data);
+                   _this.questions = response.data.questions
+            })
+
+          }
+
+        });
+      </script>
+
+</body>
+</html>

@@ -15,35 +15,58 @@
         <div>
             <h2>Quiz </h2>
             </div>
+            
             <div class="form-group">
                 <label>Enter name</label>
-                <input class="form-control" v-model="name"  type="text" placeholder="Enter name">
+                <input class="form-control" v-model="user_name"  type="text" placeholder="Enter name">
             </div>
 
             <div class="form-group mt-4">
                 <label>Select Category</label>
-                <select class="form-control">
-                    <option value=""></option>
+                <select class="form-control" v-model="category">
+                    <option >Choose</option>
+                    {% for category in categories %}
+                    <option value="{{category.id}}">{{category.category}}</option>
+                    {% endfor %}
                 </select>
             </div> 
+
+            <button v-on:click="createQuiz()" class="btn btn-danger mt-4">Create Quiz</button>
+
     </div>
 </div>
 
 
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script type="text/javascript">
         let app = new Vue({
           el: "#app",
           delimiters: ['[[', ']]'],
           data: {
-            name : '',
-            myTitle: 'Hello Vue!! Django Quiz ',
-            age : 21,
-            color : ['red' , 'blue' , 'green' , 'orange']
+            user_name : '',
+            category : '',
+            csrf : "{{ csrf_token }}"
           },
-          methods : {
+          methods : {   
+            createQuiz(){
+                axios({
+                    method: "POST",
+                    url: "/create-quiz/",
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    data: {'user_name': this.user_name ,'category_id' : this.category }
+                }).then(function (response) {
+                    console.log(response.data);
+                    
+                    window.location.href = `/create-question/${response.data.data.quiz_id}/?category=${response.data.data.category}`
 
+
+                })
+            }
           }
         });
       </script>

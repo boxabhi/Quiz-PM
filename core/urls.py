@@ -19,6 +19,9 @@ from home.views import *
 
 urlpatterns = [
     path('' , home),
+    path('create-question/<quiz_id>/' , create_question),
+
+    
     path('get-questions/' , get_questions),
     path('create-quiz/' , create_quiz),
     path('jet/', include('jet.urls', 'jet')), 

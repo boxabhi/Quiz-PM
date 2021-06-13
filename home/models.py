@@ -31,6 +31,9 @@ class Category(BaseModel):
 class User(BaseModel):
     user_name = models.CharField(max_length=100 )
 
+    def __str__(self) -> str:
+        return self.user_name
+
 
 class Question(BaseModel):
     category= models.ForeignKey(Category , on_delete=models.CASCADE , null=True , blank=True)
@@ -61,7 +64,8 @@ class Answer(models.Model):
 class Quiz(BaseModel):
     user = models.ForeignKey(User ,  on_delete=models.CASCADE)
     category = models.ForeignKey(Category , on_delete=models.SET_NULL , null=True , blank=True)
-
+    
+    
 
 class QuizQuestion(BaseModel):
     quiz = models.ForeignKey(Quiz , on_delete=models.CASCADE , null=True , blank=True)

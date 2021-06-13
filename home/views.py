@@ -8,29 +8,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 def home(request):
-    if request.method == 'POST':
-        try:
-            user_one = request.POST.get('user_one')
-            user_two = request.POST.get('user_two')
-            amount = request.POST.get('amount')
-            with transaction.atomic():
-                user_one_obj = Payments.objects.get(user = user_one)
-                user_one_obj.amount -= int(amount)
-                user_one_obj.save()
-
-                user_two_obj = Payments.objects.get(user = user_two)
-                user_two_obj.amount += int(amount)
-                user_two_obj.save()
-                messages.success(request, 'Your amount is transfered')
-
-        except Exception as e:
-            print(e)
-            messages.success(request, 'Something went wrong.')
+    context = {'categories' : Category.objects.all()}
+    return render(request, 'home.html'  , context)
 
 
-        return redirect('/')
-    return render(request, 'home.html')
-
+def create_question(request , quiz_id):
+    context = {'quiz_id' : quiz_id , 'category' : request.GET.get('category')}
+    return render(request  , 'quiz.html')
 
 
 def get_questions(request):
@@ -40,7 +24,7 @@ def get_questions(request):
         questions_objs = questions_objs.filter(category__category__icontains = category)
 
     questions_objs = list(questions_objs)
-    
+
     random.shuffle(questions_objs)
 
     payload = []
@@ -56,11 +40,14 @@ def get_questions(request):
     return JsonResponse({'status' : 200 , 'questions' : payload} , safe = False)
 
 
-@api_view(['POST'])
+from django.views.decorators.csrf import csrf_exempt
+import json
+@csrf_exempt
+# @api_view(['POST'])
 def create_quiz(request):
     result = {'message' : 'something went wrong' , 'status' : False}
     try:
-        data = request.data
+        data =  json.loads(request.body) # request.data
 
         user_name = data.get('user_name')
         category = data.get('category_id')
@@ -77,7 +64,7 @@ def create_quiz(request):
 
         except Exception as e:
             result['message'] = 'invalid category id'
-            return Response(result)
+            return JsonResponse(result)
 
         quiz_obj = Quiz.objects.create(user = user_obj , category = category_obj)
         
@@ -85,13 +72,12 @@ def create_quiz(request):
         result['data'] = {'quiz_id' : quiz_obj.id , 'category' : category_obj.category }
         result['status'] = True
 
-        return Response(result)
-
-
+        return JsonResponse(result)
 
     except Exception as e:
         print(e)
-    return Response(result)
+
+    return JsonResponse(result)
 
 @api_view(['POST'])
 def store_quiz(request , quiz_id):
