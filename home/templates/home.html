@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="col-6 mx-auto">
+
+        <form class="mt-5 pt-5" method="POST">
+            {% csrf_token %}
+            {% if messages %}
+          <div class="alert alert-info">
+                {% for message in messages %}
+               {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <input class="form-control" name="user_one" type="text" placeholder="Enter user one">
+            </div>
+            <div class="form-group mt-4">
+                <input class="form-control" name="user_two" type="text" placeholder="Enter user two">
+            </div>
+            <div class="form-group mt-4">
+                <input class="form-control" name="amount" type="text" placeholder="Enter amount">
+            </div>
+
+            <button type="submit" class="btn btn-success mt-3">Submit</button>
+        </form>
+    </div>
+    
+</body>
+</html>
