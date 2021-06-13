@@ -10,30 +10,43 @@
 </head>
 <body>
 
-    <div class="col-6 mx-auto">
-
-        <form class="mt-5 pt-5" method="POST">
-            {% csrf_token %}
-            {% if messages %}
-          <div class="alert alert-info">
-                {% for message in messages %}
-               {{ message }}
-                {% endfor %}
+    <div id="app">
+    <div class="mx-auto col-md-6 mt-5 pt-5">
+        <div>
+            <h2>Quiz </h2>
             </div>
-            {% endif %}
             <div class="form-group">
-                <input class="form-control" name="user_one" type="text" placeholder="Enter user one">
-            </div>
-            <div class="form-group mt-4">
-                <input class="form-control" name="user_two" type="text" placeholder="Enter user two">
-            </div>
-            <div class="form-group mt-4">
-                <input class="form-control" name="amount" type="text" placeholder="Enter amount">
+                <label>Enter name</label>
+                <input class="form-control" v-model="name"  type="text" placeholder="Enter name">
             </div>
 
-            <button type="submit" class="btn btn-success mt-3">Submit</button>
-        </form>
+            <div class="form-group mt-4">
+                <label>Select Category</label>
+                <select class="form-control">
+                    <option value=""></option>
+                </select>
+            </div> 
     </div>
-    
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+    <script type="text/javascript">
+        let app = new Vue({
+          el: "#app",
+          delimiters: ['[[', ']]'],
+          data: {
+            name : '',
+            myTitle: 'Hello Vue!! Django Quiz ',
+            age : 21,
+            color : ['red' , 'blue' , 'green' , 'orange']
+          },
+          methods : {
+
+          }
+        });
+      </script>
+
 </body>
 </html>

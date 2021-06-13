@@ -23,6 +23,9 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     category = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.category
     
 
 class User(BaseModel):
@@ -42,6 +45,7 @@ class Question(BaseModel):
         payload = []
         for answers_obj in answers_objs:
             payload.append({
+                'id' : answers_obj.id,
                 'answer' : answers_obj.answer
             })
         return payload
@@ -56,6 +60,7 @@ class Answer(models.Model):
 
 class Quiz(BaseModel):
     user = models.ForeignKey(User ,  on_delete=models.CASCADE)
+    category = models.ForeignKey(Category , on_delete=models.SET_NULL , null=True , blank=True)
 
 
 class QuizQuestion(BaseModel):
