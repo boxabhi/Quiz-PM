@@ -1,10 +1,10 @@
 from django.db import models
 import uuid
 import random
+from django.contrib.auth import get_user_model
 
 
 class Payments(models.Model):
-    user = models.CharField(max_length=100)
     amount = models.IntegerField(default=0)
 
     def __str__(self) -> str:
@@ -30,16 +30,29 @@ class Category(BaseModel):
 
 class User(BaseModel):
     user_name = models.CharField(max_length=100 )
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.user_name
 
 
+class QuestionModelManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_deleted=False)
+
 class Question(BaseModel):
     category= models.ForeignKey(Category , on_delete=models.CASCADE , null=True , blank=True)
     question = models.CharField(max_length=100)
     is_active = models.BooleanField(default=False)
-  
+    is_deleted = models.BooleanField(default=False)
+    
+    
+    objects = QuestionModelManager()
+    admin_objects = models.Manager()
+
+    def __str__(self) -> str:
+        return self.question
+
     def get_answer(self):
         answers_objs = Answer.objects.filter(question = self)
         answers_objs = list(answers_objs)
@@ -81,13 +94,4 @@ class QuestionAttempted(models.Model):
     answer = models.CharField(max_length=100)
     is_correct = models.BooleanField()
     
-
-
-
-
-
-
-
-
-
 

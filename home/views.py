@@ -43,7 +43,7 @@ def get_questions(request):
 from django.views.decorators.csrf import csrf_exempt
 import json
 @csrf_exempt
-# @api_view(['POST'])
+@api_view(['POST'])
 def create_quiz(request):
     result = {'message' : 'something went wrong' , 'status' : False}
     try:
@@ -78,6 +78,7 @@ def create_quiz(request):
         print(e)
 
     return JsonResponse(result)
+
 
 @api_view(['POST'])
 def store_quiz(request , quiz_id):

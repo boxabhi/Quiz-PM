@@ -26,6 +26,7 @@ SECRET_KEY = '$y8*a@i*+_7=np^0lq-8nw&o#_or192etu5^e0tqn)f^4^h)#1'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 
 # Application definition
@@ -41,7 +42,8 @@ INSTALLED_APPS = [
     'home',
     'rest_framework',
     'django_extensions',
-     'corsheaders',
+    'corsheaders',
+    'accounts',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True 
