@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'corsheaders',
     'accounts',
+    'myapp'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True 
@@ -146,3 +147,18 @@ JET_THEMES = [
         'title': 'Light Gray'
     }
 ]
+
+import os
+
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+
+STATICFILES_DIR = {
+    os.path.join(BASE_DIR , "public/static")
+}
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'public/static') 
+MEDIA_URL = '/media/'

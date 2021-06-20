@@ -1,5 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
-
+from django.db import models
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -29,3 +29,13 @@ class UserManager(BaseUserManager):
             raise ValueError('is_active must be true in admin')
 
         return self.create_user(email , password , **extra_fields)
+
+
+class EmployeeManager(models.Manager):
+    def get_queryset(self):
+        return super(EmployeeManager , self).get_queryset().filter(type = 'F')
+    
+    def create(self , **kwargs):
+        kwargs.update({'type' : 'F'})
+        return super(EmployeeManager , self).create(**kwargs)
+        
