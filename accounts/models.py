@@ -10,6 +10,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique= True)
     is_verified = models.BooleanField(default = False)
     phone_number = models.CharField(max_length=12)
+    email_token = models.CharField(max_length=100 , null=True , blank=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = UserManager()
@@ -21,6 +22,7 @@ class BaseEmployee(models.Model):
     joining_date = models.DateField()
     salary = models.CharField(max_length=10)
     type = models.CharField(choices=EmployeeType , max_length=10  )
+
 
 
 

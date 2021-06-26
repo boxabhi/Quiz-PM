@@ -20,12 +20,14 @@ from myapp.views import *
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
+from accounts.views import *
 urlpatterns = [
     path('' , home),
+    path('register-page/' , register),
+    path('login/' , login_attempt),
     path('create-question/<quiz_id>/' , create_question),
 
-
+    path('verify/<token>/' , verify_user_account),
     
     path('get-questions/' , get_questions),
     path('create-quiz/' , create_quiz),

@@ -6,8 +6,12 @@ from django.http import JsonResponse, request
 import random
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+import uuid
 def home(request):
+    print('@@@@@@@@@@@')
+    print(uuid.uuid4())
+    print('@@@@@@@@@@@')
+
     context = {'categories' : Category.objects.all()}
     return render(request, 'home.html'  , context)
 
