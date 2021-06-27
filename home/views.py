@@ -7,12 +7,19 @@ import random
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import uuid
-def home(request):
-    print('@@@@@@@@@@@')
-    print(uuid.uuid4())
-    print('@@@@@@@@@@@')
+from django.core.cache import cache
 
-    context = {'categories' : Category.objects.all()}
+
+def home(request):
+    context = {}
+    if cache.get('categories'):
+        context['categories'] = cache.get('categories')
+        print('CALLED FROM CACHE')
+    else:
+        context['categories'] = Category.objects.all()
+        cache.set('categories' , context['categories'])
+        print('CALLED FROM DB')
+        
     return render(request, 'home.html'  , context)
 
 

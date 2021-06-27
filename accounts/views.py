@@ -7,6 +7,7 @@ from .utils import send_activation_email
 import uuid
 from .thread import *
 
+# token -> 24hr  - [ active ] ! [error invalid token token expired]
 
 def register(request):
 
@@ -37,6 +38,11 @@ def register(request):
 
 def verify_user_account(request , token):
     try:
+        if not cache.get(token):
+            return HttpResponse('Your token has expired or invalid')
+        
+        print(cache.ttl(token)) 
+
         user_obj = User.objects.get(email_token = token)
         user_obj.is_verified = True
         user_obj.save()
@@ -49,4 +55,7 @@ def login_attempt(request):
     if request.method == 'POST':
         email   = request.POST.get('email')
         password = request.POST.get('password')
+
+
+
     return render(request , 'login.html')
