@@ -1,22 +1,26 @@
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
-from django.contrib.auth import get_user_model
-User = get_user_model()
+  
 from django.contrib import messages
 from .utils import send_activation_email
 import uuid
 from .thread import *
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # token -> 24hr  - [ active ] ! [error invalid token token expired]
 
-def register(request):
 
+
+def register(request):
     if request.method == 'POST':
         email   = request.POST.get('email')
         phone_number = request.POST.get('phone_number')
         password = request.POST.get('password')
         email_token = uuid.uuid4()
-        
+
+
+    
         user_obj = User(
             email = email, 
             phone_number = phone_number,
@@ -27,7 +31,10 @@ def register(request):
 
         activation_url = f'http://127.0.0.1:8000/verify/{email_token}/'
 
-    
+
+        SendAccountActivationEmail(email ,'Abhijeet' , activation_url ,email_token).start()
+        
+        #send_activation_email(email ,'Abhijeet' , activation_url )   
  
         messages.info(request, 'Account created.')
         return redirect('/login/')
@@ -38,12 +45,9 @@ def register(request):
 
 def verify_user_account(request , token):
     try:
-        if not cache.get(token):
-            return HttpResponse('Your token has expired or invalid')
-        
-        print(cache.ttl(token)) 
-
         user_obj = User.objects.get(email_token = token)
+        if user_obj.is_verified:
+            return HttpResponse('Your account is already verified')
         user_obj.is_verified = True
         user_obj.save()
         return HttpResponse('Your account is verified')

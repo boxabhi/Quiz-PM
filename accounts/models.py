@@ -1,16 +1,20 @@
 
-from typing import DefaultDict
 from django.db import models
 from django.contrib.auth.models import User , AbstractUser
 from django.db.models.fields import proxy
 from .manager import *
 
+
+
+
+
 class CustomUser(AbstractUser):
     username = None
-    email = models.EmailField(unique= True)
+    email = models.EmailField(unique= True)       
     is_verified = models.BooleanField(default = False)
-    phone_number = models.CharField(max_length=12)
+    phone_number = models.CharField(max_length=12 , unique= True)
     email_token = models.CharField(max_length=100 , null=True , blank=True)
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = UserManager()

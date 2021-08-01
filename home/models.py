@@ -4,6 +4,8 @@ import random
 from django.contrib.auth import get_user_model
 
 
+# DRY -> Object-> Inheritance 
+
 class Payments(models.Model):
     amount = models.IntegerField(default=0)
 
@@ -26,7 +28,9 @@ class Category(BaseModel):
 
     def __str__(self) -> str:
         return self.category
-    
+
+
+
 
 class User(BaseModel):
     user_name = models.CharField(max_length=100 )
@@ -39,6 +43,8 @@ class User(BaseModel):
 class QuestionModelManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_deleted=False)
+    
+
 
 class Question(BaseModel):
     category= models.ForeignKey(Category , on_delete=models.CASCADE , null=True , blank=True)
@@ -47,8 +53,8 @@ class Question(BaseModel):
     is_deleted = models.BooleanField(default=False)
     
     
-    objects = QuestionModelManager()
-    admin_objects = models.Manager()
+    # objects = QuestionModelManager()
+    # admin_objects = models.Manager()
 
     def __str__(self) -> str:
         return self.question

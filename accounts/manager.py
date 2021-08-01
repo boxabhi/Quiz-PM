@@ -1,13 +1,20 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 
+# Abhijeet@gmail.com
+# ABHIJEET@GMAI.com
+# abhijeet@gmail.com
+
+
+
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
     def create_user(self , email , password =None , **extra_fields):
         if not email:
-            raise ValueError('This field is required')
-        
+            raise ValueError('Email field is required')
+
         email = self.normalize_email(email)
         user = self.model(email = email , **extra_fields)
         user.set_password(password)
@@ -27,7 +34,7 @@ class UserManager(BaseUserManager):
 
         if extra_fields.get('is_active') is not True:
             raise ValueError('is_active must be true in admin')
-
+    
         return self.create_user(email , password , **extra_fields)
 
 

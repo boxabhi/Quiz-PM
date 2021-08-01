@@ -28,8 +28,10 @@ def create_question(request , quiz_id):
     return render(request  , 'quiz.html')
 
 
+
 def get_questions(request):
     category = request.GET.get('category')
+
     questions_objs = Question.objects.all()
     if category:
         questions_objs = questions_objs.filter(category__category__icontains = category)
@@ -47,7 +49,7 @@ def get_questions(request):
             'is_active' : questions_obj.is_active,
             'answer' : questions_obj.get_answer()
         })
-        
+       
     return JsonResponse({'status' : 200 , 'questions' : payload} , safe = False)
 
 
